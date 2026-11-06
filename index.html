@@ -15,7 +15,7 @@
 @media print{body:not(.printReady) main{display:none!important}body.printReady #printGuard{display:none!important}body:not(.printReady) #printGuard{display:block!important}}#printGuard{display:none}</style></head><body><p id="printGuard">「名札を作る」で名札を作成してから、「名札を印刷」を押してください。</p><main>
 <style>.personRow{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:16px;border:1px solid #cbdbe5;border-radius:9px;margin:14px 0;padding:12px 18px 18px}.personRow legend{font-size:20px;font-weight:bold;padding:0 8px}.fontSettings{display:flex;gap:20px}.fontSettings>div{flex:1}.printCard{margin-bottom:5mm}.printCard:last-child{margin-bottom:0}.qrDownload{margin:8px 0 18px}@media(max-width:750px){.personRow{grid-template-columns:1fr}}@media print{.qrDownload{display:none!important}.printCard{break-inside:avoid;margin-bottom:5mm}.printCard:last-child{margin-bottom:0}}</style>
 <p id="boot" class="warn">起動を確認しています。消えない場合は、このHTMLをEdgeまたはChromeで直接開いてください。</p>
-<header><div><h1>透析ネームプレート・ダイアライザ・抗凝固剤照合</h1><div class="muted">抗凝固剤照合版 2026-11-06 R5.5 ／ 名札の作成から、本体の製品確認まで</div></div><span class="badge">PC内で処理・外部通信なし</span></header>
+<header><div><h1>透析ネームプレート・ダイアライザ・抗凝固剤照合</h1><div class="muted">抗凝固剤照合版 2026-11-06 R5.6 ／ 名札の作成から、本体の製品確認まで</div></div><span class="badge">PC内で処理・外部通信なし</span></header>
 <p class="warn">導入前の確認版です。名札は作成時の情報です。患者本人・最新指示の確認と併用してください。抗凝固剤は登録した製品コードで照合します。薬剤の期限・投与量・投与速度は照合しません。旧名札は作り直してください。</p>
 <nav class="tabs" aria-label="機能"><button data-tab="createTab" aria-selected="true">① 名札を作る</button><button data-tab="checkTab" aria-selected="false">② 製品を照合</button><button data-tab="productsTab" aria-selected="false">製品を登録</button></nav>
 <section id="createTab">
@@ -44,7 +44,7 @@
 <section id="checkTab" hidden><div class="panel"><h2>名札QR → ダイアライザ → 抗凝固剤</h2><div id="status" role="status" aria-live="polite">「読取を開始」を押してください。</div>
 <div id="camBlock" class="camBlock" hidden><div class="buttons"><button id="camStart" class="cam">📷 カメラで読む</button><button id="camNext" hidden>次の名札</button><button id="camStop" class="secondary" hidden>カメラを止める</button></div><div id="camWrap" class="camWrap" hidden><video id="camVid" playsinline muted autoplay></video><div class="camAim"></div><div id="camHit" class="camHit" hidden></div></div><p id="camMsg" class="muted"></p></div><div id="expected" class="expected" hidden><div>名前<strong id="expectedName"></strong></div><div>予定の抗凝固剤（製品・規格）<strong id="expectedDrug"></strong></div><div class="wide">予定のダイアライザ<strong id="expectedProduct"></strong><span id="expectedIssued" class="muted"></span></div></div>
 <p id="bodyDetail" class="muted"></p><label class="field" for="scan">読み取り欄</label><input id="scan" autocomplete="off" spellcheck="false" disabled placeholder="開始後、名札QRから読み取ります">
-<div class="buttons"><button id="start" disabled>読取を開始／次の名札</button><button id="skipDrug" class="secondary" hidden>抗凝固剤は照合しない</button><button id="submit" class="secondary">入力を判定</button><button id="sound" class="secondary">警告音を試す</button></div>
+<div class="buttons"><button id="start" disabled>読取を開始／次の名札</button><button id="skipDrug" class="secondary" hidden>抗凝固剤は照合しない</button><button id="submit" class="secondary">入力を判定</button><button id="sound" class="secondary">音を試す</button></div>
 <p class="muted">日本語入力はオフ。Enter・Tab対応。ダイアライザ一致後に、抗凝固剤を読むか「抗凝固剤は照合しない」を選べます。省略は今回だけで、次の照合には引き継ぎません。名札読取後60秒で時間切れになります。別画面への移動や機能切替で照合は取り消します。リーダーの読取音ではなく、画面の判定を確認してください。</p></div></section>
 <section id="productsTab" hidden><div class="panel"><h2>抗凝固剤の製品登録</h2><p class="warn">シリンジを実読取して登録してください。写真だけでは登録しません。別の濃度・容量・製品を同じ薬剤として扱いません。「なし」や未登録薬剤には未対応です。</p>
 <label class="field" for="newDrugName">正式な製品名・濃度・容量・メーカー</label><input id="newDrugName" maxlength="80" autocomplete="off">
@@ -2487,7 +2487,7 @@ function submit(){const raw=$('scan').value;if(!raw.trim())return;if(!state||sta
 $('start').onclick=()=>{initAudio();state=PlateCore.initial();$('scan').value='';render();};$('submit').onclick=submit;
 $('scan').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();submit();}});
 $('scan').addEventListener('input',()=>{if(/[\r\n\t]/.test($('scan').value))submit();});
-$('sound').onclick=async()=>{await initAudio();beep(true);if(state&&state.phase!=='done'&&scanFocusOK())$('scan').focus();};
+$('sound').onclick=async()=>{try{unlockBeeps()}catch(e){}await initAudio();beep(false);setTimeout(()=>beep(true),700);if(state&&state.phase!=='done'&&scanFocusOK())$('scan').focus();};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{cancel();active=b.dataset.tab;for(const id of ['createTab','checkTab','productsTab'])$(id).hidden=id!==active;document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));});
 window.addEventListener('blur',cancel);document.addEventListener('visibilitychange',()=>{if(document.hidden)cancel();});
 setInterval(()=>{if((state?.phase==='body'||state?.phase==='drug')&&Date.now()-state.started>=60000){state={phase:'done',kind:'error',message:'時間切れです。最初から読み直してください。'};render();beep(true);}},500);
@@ -2554,24 +2554,36 @@ function resetRun(){runCodes=new Set();seenCode='';}
 /* 音：iPhoneはマナーモードだと Web Audio が消える。<audio> で鳴らす音を作り、画面を触ったときに一度無音で鳴らして準備しておく */
 try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
 const wavUrls={},beepEls={};
-function wavUrl(error){
- if(wavUrls[error])return wavUrls[error];
- const sr=22050,pcm=[],seq=error?[[420,.18],[420,.18],[420,.18]]:[[880,.18]];
- for(const [f,d] of seq){const n=Math.round(sr*d);for(let i=0;i<n;i++){const env=Math.min(1,i/80,(n-i)/80);pcm.push(((Math.floor(i*f*2/sr)%2)?1:-1)*.45*env)}for(let i=0;i<sr*.12;i++)pcm.push(0);}
+function wavUrl(kind){   // kind: true=ブブッ（エラー） false=ピッ 'silent'=無音（準備用）
+ if(wavUrls[kind])return wavUrls[kind];
+ const sr=22050,pcm=[],seq=kind==='silent'?[[0,.05]]:kind?[[420,.18],[420,.18],[420,.18]]:[[880,.18]];
+ for(const [f,d] of seq){const n=Math.round(sr*d);for(let i=0;i<n;i++){const env=Math.min(1,i/80,(n-i)/80);pcm.push(f?((Math.floor(i*f*2/sr)%2)?1:-1)*.8*env:0)}for(let i=0;i<sr*.12;i++)pcm.push(0);}
  const buf=new ArrayBuffer(44+pcm.length*2),dv=new DataView(buf),ws=(o,s)=>{for(let i=0;i<s.length;i++)dv.setUint8(o+i,s.charCodeAt(i))};
  ws(0,'RIFF');dv.setUint32(4,36+pcm.length*2,true);ws(8,'WAVE');ws(12,'fmt ');dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,1,true);
  dv.setUint32(24,sr,true);dv.setUint32(28,sr*2,true);dv.setUint16(32,2,true);dv.setUint16(34,16,true);ws(36,'data');dv.setUint32(40,pcm.length*2,true);
  pcm.forEach((s,i)=>dv.setInt16(44+i*2,Math.max(-1,Math.min(1,s))*32767,true));
- return wavUrls[error]=URL.createObjectURL(new Blob([buf],{type:'audio/wav'}));
+ return wavUrls[kind]=URL.createObjectURL(new Blob([buf],{type:'audio/wav'}));
 }
+/* iPhone・iPad：鳴らす部品（<audio>）を1つだけ使う。画面を触った瞬間に「無音の短い音」を音ありで再生して、その部品を鳴らせる状態にする。
+   以後は音を入れ替えて鳴らす（同じ部品なら、触った瞬間でなくても鳴らせる）。予備として Web Audio も触った瞬間に起こしておく。 */
+let beepEl=null,beepReady=false;
 function unlockBeeps(){
  if(!IOS)return;
- for(const e of [false,true]){const u=wavUrl(e);if(beepEls[u])continue;const a=new Audio(u);a.preload='auto';a.muted=true;beepEls[u]=a;
-  const p=a.play();if(p&&p.then)p.then(()=>{a.pause();a.currentTime=0;a.muted=false}).catch(()=>{delete beepEls[u]});}
+ try{audio ||=new(window.AudioContext||window.webkitAudioContext)();if(audio.state!=='running')audio.resume();
+  const b=audio.createBuffer(1,1,22050),s=audio.createBufferSource();s.buffer=b;s.connect(audio.destination);s.start(0);}catch(e){}
+ if(beepReady)return;
+ try{beepEl ||=new Audio();beepEl.src=wavUrl('silent');beepEl.muted=false;const p=beepEl.play();
+  if(p&&p.then)p.then(()=>{beepReady=true;}).catch(()=>{});else beepReady=true;}catch(e){}
 }
-if(IOS)document.addEventListener('touchend',()=>{try{unlockBeeps()}catch(e){}},{capture:true});
+if(IOS)['touchend','click'].forEach(ev=>document.addEventListener(ev,()=>{try{unlockBeeps()}catch(e){}},{capture:true}));
+function soundTrouble(err){try{$('camMsg').textContent='音を鳴らせませんでした。画面を一度タップしてから続けてください。iPhoneの音量ボタンで音量（メディア）も確認してください。'+(err?'（'+err.name+'）':'');}catch(e){}}
 function beep(error){
- if(IOS){try{const u=wavUrl(!!error),a=beepEls[u]||new Audio(u);a.muted=false;a.currentTime=0;const p=a.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}return;}
+ if(IOS){
+  if(beepEl&&beepReady){try{beepEl.src=wavUrl(!!error);beepEl.currentTime=0;const p=beepEl.play();
+    if(p&&p.catch)p.catch(err=>{if(audio?.state==='running')beepCtx(error);else soundTrouble(err);});}catch(err){soundTrouble(err);}return;}
+  if(audio?.state==='running'){beepCtx(error);return;}
+  soundTrouble();return;
+ }
  beepCtx(error);
 }
 function zxPrepare(){
@@ -2594,7 +2606,7 @@ function feedCamera(text){
  camHit(s.kind==='error'?'error':s.kind==='skipped'?'skipped':s.phase==='done'?'ok':'step',(s.kind==='error'?'✕ ':'✓ ')+s.message);
 }
 async function camStart(){
- await initAudio();try{unlockBeeps()}catch(e){}
+ try{unlockBeeps()}catch(e){}await initAudio();
  if(!state||state.phase==='done')$('start').click();
  $('camMsg').textContent='カメラを起動しています…';
  try{await zxPrepare()}catch(e){$('camMsg').textContent='読み取りの準備ができませんでした：'+e.message;return;}
