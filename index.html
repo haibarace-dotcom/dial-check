@@ -15,7 +15,7 @@
 @media print{body:not(.printReady) main{display:none!important}body.printReady #printGuard{display:none!important}body:not(.printReady) #printGuard{display:block!important}}#printGuard{display:none}</style></head><body><p id="printGuard">「名札を作る」で名札を作成してから、「名札を印刷」を押してください。</p><main>
 <style>.personRow{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:16px;border:1px solid #cbdbe5;border-radius:9px;margin:14px 0;padding:12px 18px 18px}.personRow legend{font-size:20px;font-weight:bold;padding:0 8px}.fontSettings{display:flex;gap:20px}.fontSettings>div{flex:1}.printCard{margin-bottom:5mm}.printCard:last-child{margin-bottom:0}.qrDownload{margin:8px 0 18px}@media(max-width:750px){.personRow{grid-template-columns:1fr}}@media print{.qrDownload{display:none!important}.printCard{break-inside:avoid;margin-bottom:5mm}.printCard:last-child{margin-bottom:0}}</style>
 <p id="boot" class="warn">起動を確認しています。消えない場合は、このHTMLをEdgeまたはChromeで直接開いてください。</p>
-<header><div><h1>透析ネームプレート・ダイアライザ・抗凝固剤照合</h1><div class="muted">抗凝固剤照合版 2026-11-06 R5.3 ／ 名札の作成から、本体の製品確認まで</div></div><span class="badge">PC内で処理・外部通信なし</span></header>
+<header><div><h1>透析ネームプレート・ダイアライザ・抗凝固剤照合</h1><div class="muted">抗凝固剤照合版 2026-11-06 R5.4 ／ 名札の作成から、本体の製品確認まで</div></div><span class="badge">PC内で処理・外部通信なし</span></header>
 <p class="warn">導入前の確認版です。名札は作成時の情報です。患者本人・最新指示の確認と併用してください。抗凝固剤は登録した製品コードで照合します。薬剤の期限・投与量・投与速度は照合しません。旧名札は作り直してください。</p>
 <nav class="tabs" aria-label="機能"><button data-tab="createTab" aria-selected="true">① 名札を作る</button><button data-tab="checkTab" aria-selected="false">② 製品を照合</button><button data-tab="productsTab" aria-selected="false">製品を登録</button></nav>
 <section id="createTab">
@@ -2481,9 +2481,9 @@ function saveQr(element,row){
 $('clear').onclick=()=>{invalidate();for(const suffix of suffixes){$('person'+suffix).value='';$('drug'+suffix).value='';}$('createError').textContent='';cancel();$('person').focus();};
 async function initAudio(){try{audio ||=new(window.AudioContext||window.webkitAudioContext)();await audio.resume();}catch(e){}}
 function beepCtx(error){try{if(audio?.state!=='running')return;for(let i=0;i<(error?3:1);i++){const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+i*.3;o.frequency.value=error?420:880;g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.2);}}catch(e){}}
-function render(){const s=state;document.body.classList.toggle('mismatch',s?.kind==='error'&&!s.cancelled&&active==='checkTab');$('skipDrug').hidden=s?.phase!=='drug';$('status').className=s?.kind||'';$('status').textContent=s?.message||'「読取を開始」を押してください。';$('scan').disabled=!s||s.phase==='done';$('expected').hidden=!s?.label;$('expectedName').textContent=s?.label?.name||'';$('expectedDrug').textContent=s?.label?(drugs.find(d=>d.gtin===s.label.drugGtin)?.name||s.label.drug)+' ／ '+s.label.drugGtin:'';$('expectedProduct').textContent=s?.label?.product||'';$('expectedIssued').textContent=s?.label?'名札作成：'+stamp(s.label.issued):'';$('bodyDetail').textContent=s?.item?`実物コード：${s.item.gtin} ／ 使用期限：${s.item.expiryText} ／ ロット：${s.item.lot}`:'';if(!$('scan').disabled&&active==='checkTab')$('scan').focus();}
+function render(){const s=state;document.body.classList.toggle('mismatch',s?.kind==='error'&&!s.cancelled&&active==='checkTab');$('skipDrug').hidden=s?.phase!=='drug';$('status').className=s?.kind||'';$('status').textContent=s?.message||'名札のQRを読むと照合を始めます。';$('scan').disabled=false;$('scan').placeholder=!s||s.phase==='done'?'次の名札のQRを読むと、続けて照合します':'続けて読み取ります';$('expected').hidden=!s?.label;$('expectedName').textContent=s?.label?.name||'';$('expectedDrug').textContent=s?.label?(drugs.find(d=>d.gtin===s.label.drugGtin)?.name||s.label.drug)+' ／ '+s.label.drugGtin:'';$('expectedProduct').textContent=s?.label?.product||'';$('expectedIssued').textContent=s?.label?'名札作成：'+stamp(s.label.issued):'';$('bodyDetail').textContent=s?.item?`実物コード：${s.item.gtin} ／ 使用期限：${s.item.expiryText} ／ ロット：${s.item.lot}`:'';if(active==='checkTab'&&scanFocusOK())$('scan').focus();}
 function cancel(){if(!state)return;state={phase:'done',kind:'error',cancelled:true,message:'照合を取り消しました。最初から読み直してください。'};$('scan').value='';render();}
-function submit(){if(!state||state.phase==='done'||!$('scan').value.trim())return;state=PlateCore.step(state,$('scan').value,catalog,Date.now(),drugs);$('scan').value='';render();if(state.phase==='done')beep(state.kind!=='ok');}
+function submit(){const raw=$('scan').value;if(!raw.trim())return;if(!state||state.phase==='done'){let isLabel=false;try{PlateCore.decode(raw);isLabel=true;}catch(e){}if(!isLabel){$('scan').value='';beep(true);$('scan').placeholder='名札のQRから読んでください（続けて照合できます）';return;}beginRun();}state=PlateCore.step(state,$('scan').value,catalog,Date.now(),drugs);$('scan').value='';render();if(state.phase==='done')beep(state.kind!=='ok');}
 $('start').onclick=()=>{initAudio();state=PlateCore.initial();$('scan').value='';render();};$('submit').onclick=submit;
 $('scan').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();submit();}});
 $('scan').addEventListener('input',()=>{if(/[\r\n\t]/.test($('scan').value))submit();});
@@ -2535,11 +2535,20 @@ $('registerDrug').onclick=()=>{try{
 
 $('skipDrug').onclick=()=>{if(state?.phase!=='drug')return;state=PlateCore.skipDrug(state);$('scan').value='';render();if(state.kind==='error')beep(true);};
 
+// --- 連続して照合する（2026-11-06 R5.4）：終わったあともカーソルを読み取り欄に残し、次の名札QRで自動的に始める
+var camOn=false;
+function scanFocusOK(){return !camOn&&!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);}   // iPhone等はキーボードが映像を隠すので自動で置かない
+function beginRun(){initAudio();state=PlateCore.initial();if(typeof resetRun==='function')resetRun();}
+$('scan').disabled=false;$('scan').placeholder='名札のQRを読むと照合を始めます';$('status').textContent='名札のQRを読むと照合を始めます。';
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(active==='checkTab'&&scanFocusOK())setTimeout(()=>$('scan').focus(),0);}));
+document.addEventListener('click',e=>{if(active!=='checkTab'||!scanFocusOK())return;if(e.target.closest('input,button,select,textarea,a,label,summary'))return;$('scan').focus();});
+
 // --- カメラで読む（iPhone・iPad・カメラ付きPC）。読み取りは端末の中だけで行う（zxing-wasm をこのHTMLに埋め込み、外部通信なし）
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const CAM_FORMATS=['QRCode','Code128','DataBarOmni','DataBarStk','DataBarStkOmni','DataBarLtd','DataBarExp','DataBarExpStk','DataMatrix'];
 let camStream=null,camTimer=null,camBusy=false,zxReady=null,seenCode='',seenAt=0,runCodes=new Set(),hitTimer=null;
 const camCanvas=document.createElement('canvas');
+function resetRun(){runCodes=new Set();seenCode='';}
 /* 音：iPhoneはマナーモードだと Web Audio が消える。<audio> で鳴らす音を作り、画面を触ったときに一度無音で鳴らして準備しておく */
 try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
 const wavUrls={},beepEls={};
@@ -2574,7 +2583,7 @@ function feedCamera(text){
  const now=Date.now();
  if(text===seenCode&&now-seenAt<1500){seenAt=now;return;}   // 写り続けている同じコードは1回だけ
  seenCode=text;seenAt=now;
- if(!state||state.phase==='done'){camHit('wait','「読取を開始／次の名札」を押してください');return;}
+ if(!state||state.phase==='done'){let isLabel=false;try{PlateCore.decode(text);isLabel=true;}catch(e){}if(!isLabel){camHit('wait','次の名札のQRを写してください');return;}beginRun();}
  if(runCodes.has(text))return;                               // この照合ですでに読んだ名札・本体がまた写っても数えない
  runCodes.add(text);
  $('scan').value=text;submit();
@@ -2589,6 +2598,7 @@ async function camStart(){
  try{await zxPrepare()}catch(e){$('camMsg').textContent='読み取りの準備ができませんでした：'+e.message;return;}
  try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});}
  catch(e){$('camMsg').textContent='カメラを使えませんでした。ブラウザの設定でカメラの使用を許可してください。';return;}
+ camOn=true;try{$('scan').blur()}catch(e){}
  const v=$('camVid');v.srcObject=camStream;$('camWrap').hidden=false;$('camStart').hidden=true;$('camStop').hidden=false;$('camNext').hidden=false;
  try{$('status').scrollIntoView({block:'start',behavior:'smooth'})}catch(e){}
  try{await camStream.getVideoTracks()[0].applyConstraints({advanced:[{focusMode:'continuous'}]})}catch(e){}
@@ -2606,12 +2616,12 @@ async function camStart(){
  },250);
 }
 function camStop(){
- clearInterval(camTimer);camTimer=null;
+ clearInterval(camTimer);camTimer=null;camOn=false;
  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
  $('camWrap').hidden=true;$('camStart').hidden=false;$('camStop').hidden=true;$('camNext').hidden=true;$('camHit').hidden=true;$('camMsg').textContent='';
 }
 $('camStart').onclick=camStart;$('camStop').onclick=camStop;$('camNext').onclick=()=>{$('start').click();camHit('wait','次の名札のQRを写してください');};
-{const orig=$('start').onclick;$('start').onclick=(e)=>{runCodes=new Set();seenCode='';try{unlockBeeps()}catch(x){};orig(e);};}
+{const orig=$('start').onclick;$('start').onclick=(e)=>{resetRun();try{unlockBeeps()}catch(x){};orig(e);};}
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(camStream)camStop();}));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&camStream)camStop();});
 $('camBlock').hidden=!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.isSecureContext&&window.WebAssembly);
