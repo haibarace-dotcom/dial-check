@@ -1,6 +1,6 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval'; media-src blob: mediastream:; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; base-uri 'none'; form-action 'none'"><title>透析ネームプレート・ダイアライザ・抗凝固剤照合</title>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval'; media-src blob: mediastream:; style-src 'unsafe-inline'; img-src data: blob:; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'"><title>透析ネームプレート・ダイアライザ・抗凝固剤照合</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f2f6f8;color:#20384a;font-family:'Yu Gothic UI',Meiryo,sans-serif}main{max-width:1200px;margin:auto;padding:25px}header{display:flex;align-items:center;justify-content:space-between;gap:20px}h1{font-size:26px;margin:5px 0}h2{font-size:21px;margin:0 0 20px}.badge{background:#dcece9;color:#246151;padding:6px 12px;border-radius:20px;white-space:nowrap}.muted{font-size:14px;color:#5c7080;line-height:1.8}.warn{background:#fff4de;color:#745119;padding:12px 16px;border-radius:8px;line-height:1.7}.tabs{display:flex;gap:9px;border-bottom:1px solid #c7d6df;margin:22px 0}button{border:0;background:#17617d;color:white;border-radius:7px;padding:12px 20px;font-size:16px;font-weight:600;cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}button.secondary{background:#e5edf2;color:#24475d}.tabs button{background:transparent;color:#516b7a;border-radius:7px 7px 0 0}.tabs button[aria-selected=true]{background:#17617d;color:white}.panel{background:white;border:1px solid #d3e0e7;border-radius:13px;padding:24px;margin-bottom:20px}.layout{display:grid;grid-template-columns:320px 1fr;gap:22px}label.field{display:block;font-weight:600;margin:16px 0 6px}input,select{width:100%;font-family:inherit;font-size:17px;border:1px solid #91a9b9;padding:11px;border-radius:6px;background:white;color:#20384a}input:focus,select:focus{outline:3px solid #c5e1ec}input[type=checkbox]{width:auto}.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.errorText{color:#af2a2a;min-height:24px;white-space:pre-line;line-height:1.6}.scroll{overflow:auto;padding:10px 0}.plate{width:180mm;height:70mm;display:grid;grid-template-columns:minmax(0,1fr) 48mm;gap:5mm;padding:6mm;background:white;border:1px solid #334;align-items:center;color:black;font-family:Meiryo,sans-serif}.plateName{font-size:10mm;font-weight:bold;line-height:1.3;overflow-wrap:anywhere}.plateProduct{font-size:6mm;font-weight:bold;margin-top:5mm;overflow-wrap:anywhere;line-height:1.3}.plateDrug{font-size:5mm;margin-top:3mm;overflow-wrap:anywhere;line-height:1.3}.qrSide{text-align:center}.qrSide svg{display:block;width:46mm;height:46mm;margin:auto}.issued{font-size:2.5mm;line-height:1.5;margin-top:2mm}.empty{padding:70px 20px;text-align:center;background:#f4f7f9;border:1px dashed #b2c7d3;border-radius:8px;color:#6a7f8d}#status{font-size:26px;font-weight:bold;padding:24px;border-left:7px solid #6d8597;background:#edf3f7;border-radius:8px;line-height:1.5}#status.ok{background:#e6f6ee;color:#096441;border-color:#19865c}#status.skipped{background:#fff4de;color:#745119;border-color:#b77b18}#status.error{background:#fff0ef;color:#a32727;border-color:#c33333}body.mismatch{background:#fbe6e6}body.mismatch::after{content:'';position:fixed;inset:0;background:rgba(214,40,40,.10);box-shadow:inset 0 0 0 8px rgba(195,51,51,.45);pointer-events:none;z-index:1000;animation:mismatchIn .25s ease-out}@keyframes mismatchIn{from{opacity:0}to{opacity:1}}@media print{body.mismatch::after{display:none}}.camBlock{margin:14px 0}.camWrap{position:relative;margin:12px 0;border-radius:10px;overflow:hidden;background:#000}#camVid{display:block;width:100%;max-height:48vh;object-fit:cover}.camAim{position:absolute;left:8%;right:8%;top:22%;bottom:22%;border:3px solid rgba(255,255,255,.9);border-radius:8px;box-shadow:0 0 0 999px rgba(0,0,0,.28);pointer-events:none}.camHit{position:absolute;left:4%;right:4%;bottom:5%;padding:12px 14px;border-radius:8px;font-size:21px;font-weight:bold;line-height:1.4;color:#fff;background:rgba(25,134,92,.94);text-align:center}.camHit.step{background:rgba(32,84,120,.94)}.camHit.wait{background:rgba(60,70,80,.9)}.camHit.skipped{background:rgba(183,123,24,.95)}.camHit.error{background:rgba(195,51,51,.96)}button.cam{font-size:20px;padding:14px 22px}@media(max-width:700px){#status{font-size:19px;padding:14px 14px 14px 16px}.expected{grid-template-columns:1fr!important;gap:8px!important;padding:12px!important;margin:12px 0!important}.expected strong{font-size:17px!important}#camVid{max-height:42vh}.camHit{font-size:18px}}.expected{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:#f5f8fa;padding:20px;margin:20px 0;border-radius:8px}.expected strong{display:block;font-size:22px;margin:6px 0;overflow-wrap:anywhere}.wide{grid-column:1/-1}table{width:100%;border-collapse:collapse}td,th{text-align:left;border-bottom:1px solid #dce4e9;padding:12px;overflow-wrap:anywhere}#scan{font-size:23px}.printNote{display:none}[hidden]{display:none!important}@media(max-width:1050px){.layout{grid-template-columns:1fr}.plate{transform-origin:left top}.scroll{max-width:100%}}@media print{@page{size:A4 portrait;margin:15mm}body{background:white}main{padding:0;max-width:none}main>*{display:none!important}main>#createTab{display:block!important}#createTab>*{display:none!important}#createTab>#previewPanel{display:block!important;border:none;padding:0;margin:0}#previewPanel>*{display:none!important}#previewPanel>#printArea{display:block!important;padding:0;overflow:visible}.plate{break-inside:avoid}.printNote{display:block!important;font-size:9pt;margin-top:4mm}}
+*{box-sizing:border-box}body{margin:0;background:#f2f6f8;color:#20384a;font-family:'Yu Gothic UI',Meiryo,sans-serif}main{max-width:1200px;margin:auto;padding:25px}header{display:flex;align-items:center;justify-content:space-between;gap:20px}h1{font-size:26px;margin:5px 0}h2{font-size:21px;margin:0 0 20px}.badge{background:#dcece9;color:#246151;padding:6px 12px;border-radius:20px;white-space:nowrap}.muted{font-size:14px;color:#5c7080;line-height:1.8}.warn{background:#fff4de;color:#745119;padding:12px 16px;border-radius:8px;line-height:1.7}.tabs{display:flex;gap:9px;border-bottom:1px solid #c7d6df;margin:22px 0}button{border:0;background:#17617d;color:white;border-radius:7px;padding:12px 20px;font-size:16px;font-weight:600;cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}button.secondary{background:#e5edf2;color:#24475d}.tabs button{background:transparent;color:#516b7a;border-radius:7px 7px 0 0}.tabs button[aria-selected=true]{background:#17617d;color:white}.panel{background:white;border:1px solid #d3e0e7;border-radius:13px;padding:24px;margin-bottom:20px}.layout{display:grid;grid-template-columns:320px 1fr;gap:22px}label.field{display:block;font-weight:600;margin:16px 0 6px}input,select{width:100%;font-family:inherit;font-size:17px;border:1px solid #91a9b9;padding:11px;border-radius:6px;background:white;color:#20384a}input:focus,select:focus{outline:3px solid #c5e1ec}input[type=checkbox]{width:auto}.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.errorText{color:#af2a2a;min-height:24px;white-space:pre-line;line-height:1.6}.scroll{overflow:auto;padding:10px 0}.plate{width:180mm;height:70mm;display:grid;grid-template-columns:minmax(0,1fr) 48mm;gap:5mm;padding:6mm;background:white;border:1px solid #334;align-items:center;color:black;font-family:Meiryo,sans-serif}.plateName{font-size:10mm;font-weight:bold;line-height:1.3;overflow-wrap:anywhere}.plateProduct{font-size:6mm;font-weight:bold;margin-top:5mm;overflow-wrap:anywhere;line-height:1.3}.plateDrug{font-size:5mm;margin-top:3mm;overflow-wrap:anywhere;line-height:1.3}.qrSide{text-align:center}.qrSide svg{display:block;width:46mm;height:46mm;margin:auto}.issued{font-size:2.5mm;line-height:1.5;margin-top:2mm}.empty{padding:70px 20px;text-align:center;background:#f4f7f9;border:1px dashed #b2c7d3;border-radius:8px;color:#6a7f8d}#status{font-size:26px;font-weight:bold;padding:24px;border-left:7px solid #6d8597;background:#edf3f7;border-radius:8px;line-height:1.5}#status.ok{background:#e6f6ee;color:#096441;border-color:#19865c}#status.skipped{background:#fff4de;color:#745119;border-color:#b77b18}#status.error{background:#fff0ef;color:#a32727;border-color:#c33333}body.mismatch{background:#fbe6e6}body.mismatch::after{content:'';position:fixed;inset:0;background:rgba(214,40,40,.10);box-shadow:inset 0 0 0 8px rgba(195,51,51,.45);pointer-events:none;z-index:1000;animation:mismatchIn .25s ease-out}@keyframes mismatchIn{from{opacity:0}to{opacity:1}}body.matched{background:#e3f4ea}body.matched::after{content:'';position:fixed;inset:0;background:rgba(25,134,92,.09);box-shadow:inset 0 0 0 8px rgba(25,134,92,.45);pointer-events:none;z-index:1000;animation:mismatchIn .25s ease-out}@media print{body.mismatch::after,body.matched::after{display:none}}.headRight{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.userBox{position:relative}.userMenu{position:absolute;right:0;top:110%;background:#fff;border:1px solid #c7d6df;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;z-index:1200;min-width:180px;box-shadow:0 6px 20px rgba(0,0,0,.15)}.offlineBar{background:#fff0ef;color:#a32727;border:2px solid #c33333;padding:10px 14px;border-radius:8px;margin:12px 0;font-weight:bold}.pendingNote{color:#a35b00;font-weight:bold;margin:6px 0;min-height:0}.logon{position:fixed;inset:0;background:#eef3f6;z-index:2000;overflow:auto;padding:24px 16px}.logonBox{max-width:1000px;margin:auto}.logonBox h1{font-size:26px}.logonForm,.todayBox{background:#fff;border:1px solid #cbdbe5;border-radius:10px;padding:18px;margin:14px 0}.todayBox h2{font-size:19px}.logonForm select,.logonForm input{font-size:20px;width:100%;max-width:420px;padding:10px}.okText{color:#096441;font-weight:bold}.ngText{color:#a32727;font-weight:bold}.warnText{color:#745119;font-weight:bold}.tableWrap{overflow-x:auto}.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:2100;display:flex;align-items:flex-start;justify-content:center;padding:40px 12px;overflow:auto}.modalBox{background:#fff;border-radius:12px;padding:20px;max-width:760px;width:100%}.modalBox input{font-size:18px;padding:8px;max-width:360px;width:100%}body.locked{overflow:hidden}.logon table,.histTable{white-space:nowrap}@media(max-width:700px){header{flex-wrap:wrap}.headRight{width:100%;justify-content:flex-start}.logon table{font-size:15px}.logon td,.logon th{padding:8px 10px}.logonBox h1{font-size:22px}}.camBlock{margin:14px 0}.camWrap{position:relative;margin:12px 0;border-radius:10px;overflow:hidden;background:#000}#camVid{display:block;width:100%;max-height:48vh;object-fit:cover}.camAim{position:absolute;left:8%;right:8%;top:22%;bottom:22%;border:3px solid rgba(255,255,255,.9);border-radius:8px;box-shadow:0 0 0 999px rgba(0,0,0,.28);pointer-events:none}.camHit{position:absolute;left:4%;right:4%;bottom:5%;padding:12px 14px;border-radius:8px;font-size:21px;font-weight:bold;line-height:1.4;color:#fff;background:rgba(25,134,92,.94);text-align:center}.camHit.step{background:rgba(32,84,120,.94)}.camHit.wait{background:rgba(60,70,80,.9)}.camHit.skipped{background:rgba(183,123,24,.95)}.camHit.error{background:rgba(195,51,51,.96)}button.cam{font-size:20px;padding:14px 22px}@media(max-width:700px){#status{font-size:19px;padding:14px 14px 14px 16px}.expected{grid-template-columns:1fr!important;gap:8px!important;padding:12px!important;margin:12px 0!important}.expected strong{font-size:17px!important}#camVid{max-height:42vh}.camHit{font-size:18px}}.expected{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:#f5f8fa;padding:20px;margin:20px 0;border-radius:8px}.expected strong{display:block;font-size:22px;margin:6px 0;overflow-wrap:anywhere}.wide{grid-column:1/-1}table{width:100%;border-collapse:collapse}td,th{text-align:left;border-bottom:1px solid #dce4e9;padding:12px;overflow-wrap:anywhere}#scan{font-size:23px}.printNote{display:none}[hidden]{display:none!important}@media(max-width:1050px){.layout{grid-template-columns:1fr}.plate{transform-origin:left top}.scroll{max-width:100%}}@media print{@page{size:A4 portrait;margin:15mm}body{background:white}main{padding:0;max-width:none}main>*{display:none!important}main>#createTab{display:block!important}#createTab>*{display:none!important}#createTab>#previewPanel{display:block!important;border:none;padding:0;margin:0}#previewPanel>*{display:none!important}#previewPanel>#printArea{display:block!important;padding:0;overflow:visible}.plate{break-inside:avoid}.printNote{display:block!important;font-size:9pt;margin-top:4mm}}
 </style><style>
 .plate{padding:5mm;gap:4mm;grid-template-columns:minmax(0,1fr) 30mm;font-family:'Yu Gothic',Meiryo,sans-serif}
 .qrSide svg{width:30mm;height:30mm}
@@ -12,12 +12,12 @@
 .plateProduct{font-size:14.5mm;font-weight:500;margin:0;line-height:1.2}
 .productMain{display:block;white-space:nowrap;min-width:0}
 .plateProduct .spec{display:block;font-size:3.6mm;margin-top:1.5mm}
-@media print{body:not(.printReady) main{display:none!important}body.printReady #printGuard{display:none!important}body:not(.printReady) #printGuard{display:block!important}}#printGuard{display:none}</style></head><body><p id="printGuard">「名札を作る」で名札を作成してから、「名札を印刷」を押してください。</p><main>
+@media print{body:not(.printReady) main{display:none!important}body.printReady #printGuard{display:none!important}body:not(.printReady) #printGuard{display:block!important}}#printGuard{display:none}</style></head><body><p id="printGuard">「名札を作る」で名札を作成してから、「名札を印刷」を押してください。</p><div id="logon" class="logon" hidden><div class="logonBox"><h1>透析照合　ログオン</h1><section class="logonForm"><label class="field" for="logonName">名前</label><select id="logonName"></select><label class="field" for="logonPass">パスワード</label><input id="logonPass" type="password" autocomplete="current-password"><p id="logonHint" class="muted"></p><div class="buttons"><button id="logonBtn">ログオン</button></div><p id="logonError" class="errorText" role="alert"></p><button id="logonOffline" class="secondary" hidden>記録せずに照合する（通信できないときだけ）</button></section><section class="todayBox"><h2>本日のチェック状況　<span id="todaySum"></span></h2><div class="tableWrap"><table><thead><tr><th>時刻</th><th>担当</th><th>結果</th><th>患者</th><th>ダイアライザ</th><th>抗凝固剤</th></tr></thead><tbody id="todayRows"></tbody></table></div><p class="muted"><span id="todayMsg"></span>　患者名はログオン後の「照合履歴」で確認できます。</p><button id="todayReload" class="secondary">最新にする</button></section></div></div><div id="modal" class="modal" hidden><div class="modalBox"><h2 id="modalTitle"></h2><div id="modalBody"></div><div class="buttons"><button id="modalClose" class="secondary">閉じる</button></div></div></div><main>
 <style>.personRow{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:16px;border:1px solid #cbdbe5;border-radius:9px;margin:14px 0;padding:12px 18px 18px}.personRow legend{font-size:20px;font-weight:bold;padding:0 8px}.fontSettings{display:flex;gap:20px}.fontSettings>div{flex:1}.printCard{margin-bottom:5mm}.printCard:last-child{margin-bottom:0}.qrDownload{margin:8px 0 18px}@media(max-width:750px){.personRow{grid-template-columns:1fr}}@media print{.qrDownload{display:none!important}.printCard{break-inside:avoid;margin-bottom:5mm}.printCard:last-child{margin-bottom:0}}</style>
 <p id="boot" class="warn">起動を確認しています。消えない場合は、このHTMLをEdgeまたはChromeで直接開いてください。</p>
-<header><div><h1>透析ネームプレート・ダイアライザ・抗凝固剤照合</h1><div class="muted">抗凝固剤照合版 2026-11-06 R5.6 ／ 名札の作成から、本体の製品確認まで</div></div><span class="badge">PC内で処理・外部通信なし</span></header>
+<header><div><h1>透析ネームプレート・ダイアライザ・抗凝固剤照合</h1><div class="muted">抗凝固剤照合版 2026-11-06 R6.0 ／ 名札の作成から、本体の製品確認まで</div></div><div class="headRight"><span class="badge" id="badge">PC内で処理・外部通信なし</span><div id="userBox" class="userBox" hidden><button id="userBtn" class="secondary"></button><div id="userMenu" class="userMenu" hidden><button id="mPass" class="secondary">パスワードを変更</button><button id="mStaff" class="secondary" hidden>スタッフ管理</button><button id="mLogoff" class="secondary">ログオフ</button></div></div></div></header><div id="offlineBar" class="offlineBar" hidden>記録なしで使用中：通信できないため、誰が照合したかは残りません</div>
 <p class="warn">導入前の確認版です。名札は作成時の情報です。患者本人・最新指示の確認と併用してください。抗凝固剤は登録した製品コードで照合します。薬剤の期限・投与量・投与速度は照合しません。旧名札は作り直してください。</p>
-<nav class="tabs" aria-label="機能"><button data-tab="createTab" aria-selected="true">① 名札を作る</button><button data-tab="checkTab" aria-selected="false">② 製品を照合</button><button data-tab="productsTab" aria-selected="false">製品を登録</button></nav>
+<nav class="tabs" aria-label="機能"><button data-tab="createTab" aria-selected="true">① 名札を作る</button><button data-tab="checkTab" aria-selected="false">② 製品を照合</button><button data-tab="productsTab" aria-selected="false">製品を登録</button><button data-tab="historyTab" aria-selected="false">照合履歴</button></nav><p id="pendingNote" class="pendingNote"></p>
 <section id="createTab">
 <div class="panel"><h2>3人分を入力して、A4一枚に印刷</h2><p class="muted">各行に別々の方の情報を入力してください。1人・2人だけなら、使わない行の名前と抗凝固剤は空欄にします。</p><fieldset class="personRow"><legend>1人目</legend>
 <div><label class="field" for="person">名前</label><input id="person" maxlength="24" autocomplete="off" placeholder="1人目の氏名"></div>
@@ -46,7 +46,7 @@
 <p id="bodyDetail" class="muted"></p><label class="field" for="scan">読み取り欄</label><input id="scan" autocomplete="off" spellcheck="false" disabled placeholder="開始後、名札QRから読み取ります">
 <div class="buttons"><button id="start" disabled>読取を開始／次の名札</button><button id="skipDrug" class="secondary" hidden>抗凝固剤は照合しない</button><button id="submit" class="secondary">入力を判定</button><button id="sound" class="secondary">音を試す</button></div>
 <p class="muted">日本語入力はオフ。Enter・Tab対応。ダイアライザ一致後に、抗凝固剤を読むか「抗凝固剤は照合しない」を選べます。省略は今回だけで、次の照合には引き継ぎません。名札読取後60秒で時間切れになります。別画面への移動や機能切替で照合は取り消します。リーダーの読取音ではなく、画面の判定を確認してください。</p></div></section>
-<section id="productsTab" hidden><div class="panel"><h2>抗凝固剤の製品登録</h2><p class="warn">シリンジを実読取して登録してください。写真だけでは登録しません。別の濃度・容量・製品を同じ薬剤として扱いません。「なし」や未登録薬剤には未対応です。</p>
+<section id="historyTab" hidden><div class="panel"><h2>照合履歴</h2><div class="buttons"><input type="date" id="histDate"><button id="histLoad">表示</button></div><p id="histPending" class="muted"></p><p id="histMsg" class="muted"></p><div class="tableWrap"><table class="histTable"><thead><tr><th>時刻</th><th>担当</th><th>結果</th><th>患者名</th><th>ダイアライザ</th><th>抗凝固剤</th><th>内容・端末</th></tr></thead><tbody id="histRows"></tbody></table></div></div></section><section id="productsTab" hidden><div class="panel"><h2>抗凝固剤の製品登録</h2><p class="warn">シリンジを実読取して登録してください。写真だけでは登録しません。別の濃度・容量・製品を同じ薬剤として扱いません。「なし」や未登録薬剤には未対応です。</p>
 <label class="field" for="newDrugName">正式な製品名・濃度・容量・メーカー</label><input id="newDrugName" maxlength="80" autocomplete="off">
 <label class="field" for="newDrugShort">名札に大きく表示する名称（24文字まで）</label><input id="newDrugShort" maxlength="24" autocomplete="off">
 <label class="field" for="newDrugBarcode">シリンジのバーコードを読む</label><input id="newDrugBarcode" autocomplete="off" spellcheck="false">
@@ -2481,14 +2481,14 @@ function saveQr(element,row){
 $('clear').onclick=()=>{invalidate();for(const suffix of suffixes){$('person'+suffix).value='';$('drug'+suffix).value='';}$('createError').textContent='';cancel();$('person').focus();};
 async function initAudio(){try{audio ||=new(window.AudioContext||window.webkitAudioContext)();await audio.resume();}catch(e){}}
 function beepCtx(error){try{if(audio?.state!=='running')return;for(let i=0;i<(error?3:1);i++){const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+i*.3;o.frequency.value=error?420:880;g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.2);}}catch(e){}}
-function render(){const s=state;document.body.classList.toggle('mismatch',s?.kind==='error'&&!s.cancelled&&active==='checkTab');$('skipDrug').hidden=s?.phase!=='drug';$('status').className=s?.kind||'';$('status').textContent=s?.message||'名札のQRを読むと照合を始めます。';$('scan').disabled=false;$('scan').placeholder=!s||s.phase==='done'?'次の名札のQRを読むと、続けて照合します':'続けて読み取ります';$('expected').hidden=!s?.label;$('expectedName').textContent=s?.label?.name||'';$('expectedDrug').textContent=s?.label?(drugs.find(d=>d.gtin===s.label.drugGtin)?.name||s.label.drug)+' ／ '+s.label.drugGtin:'';$('expectedProduct').textContent=s?.label?.product||'';$('expectedIssued').textContent=s?.label?'名札作成：'+stamp(s.label.issued):'';$('bodyDetail').textContent=s?.item?`実物コード：${s.item.gtin} ／ 使用期限：${s.item.expiryText} ／ ロット：${s.item.lot}`:'';if(active==='checkTab'&&scanFocusOK())$('scan').focus();}
+function render(){const s=state;document.body.classList.toggle('mismatch',s?.kind==='error'&&!s.cancelled&&active==='checkTab');document.body.classList.toggle('matched',s?.kind==='ok'&&active==='checkTab');$('skipDrug').hidden=s?.phase!=='drug';$('status').className=s?.kind||'';$('status').textContent=s?.message||'名札のQRを読むと照合を始めます。';$('scan').disabled=false;$('scan').placeholder=!s||s.phase==='done'?'次の名札のQRを読むと、続けて照合します':'続けて読み取ります';$('expected').hidden=!s?.label;$('expectedName').textContent=s?.label?.name||'';$('expectedDrug').textContent=s?.label?(drugs.find(d=>d.gtin===s.label.drugGtin)?.name||s.label.drug)+' ／ '+s.label.drugGtin:'';$('expectedProduct').textContent=s?.label?.product||'';$('expectedIssued').textContent=s?.label?'名札作成：'+stamp(s.label.issued):'';$('bodyDetail').textContent=s?.item?`実物コード：${s.item.gtin} ／ 使用期限：${s.item.expiryText} ／ ロット：${s.item.lot}`:'';if(active==='checkTab'&&scanFocusOK())$('scan').focus();}
 function cancel(){if(!state)return;state={phase:'done',kind:'error',cancelled:true,message:'照合を取り消しました。最初から読み直してください。'};$('scan').value='';render();}
-function submit(){const raw=$('scan').value;if(!raw.trim())return;if(!state||state.phase==='done'){let isLabel=false;try{PlateCore.decode(raw);isLabel=true;}catch(e){}if(!isLabel){$('scan').value='';beep(true);$('scan').placeholder='名札のQRから読んでください（続けて照合できます）';return;}beginRun();}state=PlateCore.step(state,$('scan').value,catalog,Date.now(),drugs);$('scan').value='';render();if(state.phase==='done')beep(state.kind!=='ok');}
+function submit(){const raw=$('scan').value;window.__lastRaw=raw;if(!raw.trim())return;if(!state||state.phase==='done'){let isLabel=false;try{PlateCore.decode(raw);isLabel=true;}catch(e){}if(!isLabel){$('scan').value='';beep(true);$('scan').placeholder='名札のQRから読んでください（続けて照合できます）';return;}beginRun();}state=PlateCore.step(state,$('scan').value,catalog,Date.now(),drugs);$('scan').value='';render();if(state.phase==='done')beep(state.kind!=='ok');}
 $('start').onclick=()=>{initAudio();state=PlateCore.initial();$('scan').value='';render();};$('submit').onclick=submit;
 $('scan').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();submit();}});
 $('scan').addEventListener('input',()=>{if(/[\r\n\t]/.test($('scan').value))submit();});
 $('sound').onclick=async()=>{try{unlockBeeps()}catch(e){}await initAudio();beep(false);setTimeout(()=>beep(true),700);if(state&&state.phase!=='done'&&scanFocusOK())$('scan').focus();};
-document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{cancel();active=b.dataset.tab;for(const id of ['createTab','checkTab','productsTab'])$(id).hidden=id!==active;document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));});
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{cancel();active=b.dataset.tab;for(const id of ['createTab','checkTab','productsTab','historyTab'])$(id).hidden=id!==active;document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));});
 window.addEventListener('blur',cancel);document.addEventListener('visibilitychange',()=>{if(document.hidden)cancel();});
 setInterval(()=>{if((state?.phase==='body'||state?.phase==='drug')&&Date.now()-state.started>=60000){state={phase:'done',kind:'error',message:'時間切れです。最初から読み直してください。'};render();beep(true);}},500);
 function parsed(){try{const p=PlateCore.body($('newBarcode').value);$('newParsed').textContent=`製品コード：${p.gtin} ／ 使用期限：${p.expiryText}`;}catch(e){$('newParsed').textContent=e.message;}}
@@ -2538,7 +2538,7 @@ $('skipDrug').onclick=()=>{if(state?.phase!=='drug')return;state=PlateCore.skipD
 // --- 連続して照合する（2026-11-06 R5.4）：終わったあともカーソルを読み取り欄に残し、次の名札QRで自動的に始める
 var camOn=false;
 function isTouch(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)||!!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);}
-function scanFocusOK(){return !camOn&&!isTouch();}   // iPhone・iPad等はキーボードが映像を隠すので自動で置かない
+function scanFocusOK(){return !camOn&&!isTouch()&&!document.body.classList.contains('locked');}   // iPhone・iPad等はキーボードが映像を隠すので自動で置かない
 if(isTouch()){$('scan').setAttribute('inputmode','none');}   // 触ってもキーボードを出さない（Bluetoothのリーダーは使える）   // iPhone等はキーボードが映像を隠すので自動で置かない
 function beginRun(){initAudio();state=PlateCore.initial();if(typeof resetRun==='function')resetRun();}
 $('scan').disabled=false;$('scan').placeholder='名札のQRを読むと照合を始めます';$('status').textContent='名札のQRを読むと照合を始めます。';
@@ -2639,6 +2639,153 @@ $('camStart').onclick=camStart;$('camStop').onclick=camStop;$('camNext').onclick
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(camStream)camStop();}));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&camStream)camStop();});
 $('camBlock').hidden=!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.isSecureContext&&window.WebAssembly);
+
+// --- ログオンと照合履歴（2026-11-06 R6）：照合するスタッフがログオンし、結果を担当者つきで共有の記録へ送る
+// 送り先は GAS（透析照合）。DIAL_API が空なら、従来どおりログオンなし・記録なしで動く。
+const DIAL_API='https://script.google.com/macros/s/AKfycbwUF-PFRu0RGgHUZSrT2ELUYCu2bNLrTjihPBjpt-DlCmtZ8StLrCeLI-rmxbpgH6XH/exec';
+const IDLE_MIN=15;                                   // 操作がなければ自動でログオフ（使い回しの端末で担当者を取り違えない）
+const PENDING_KEY='dial-pending-v1';
+let me=null,offlineMode=false,lastAct=Date.now(),todayTimer=null;
+function deviceName(){const u=navigator.userAgent;if(/iPad/.test(u)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))return 'iPad';if(/iPhone|iPod/.test(u))return 'iPhone';if(/Android/.test(u))return 'Android';return 'PC';}
+function jstDate(){return new Date(Date.now()+9*3600000).toISOString().slice(0,10);}
+async function callApi(action,payload,token){
+ const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),20000);
+ try{const r=await fetch(DIAL_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,token:token===undefined?(me?.token||''):token,payload:payload||{}}),signal:ctl.signal});
+  return await r.json();}
+ catch(e){return {ok:false,network:true,error:'記録用のサーバーにつながりません（'+(e.name==='AbortError'?'時間切れ':'通信できません')+'）'};}
+ finally{clearTimeout(t);}
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+function resultClass(r){return r==='一致'?'okText':r==='相違'?'ngText':'warnText';}
+
+/* ---------- ログオン画面（ログオン前に本日のチェック状況を見せる。患者名は頭の1文字だけ） ---------- */
+function showLogon(msg){
+ me=null;$('userBox').hidden=true;$('logon').hidden=false;document.body.classList.add('locked');
+ try{camStop()}catch(e){}
+ $('logonError').textContent=msg||'';$('logonPass').value='';try{document.activeElement&&document.activeElement.blur()}catch(e){}
+ loadLoginInfo();clearInterval(todayTimer);todayTimer=setInterval(()=>{if(!$('logon').hidden)loadLoginInfo(true)},60000);
+}
+async function loadLoginInfo(quiet){
+ if(!quiet)$('todayMsg').textContent='読み込み中…';
+ const r=await callApi('loginInfo',{},'');
+ if(!r.ok){$('todayMsg').textContent=r.error||'読み込めませんでした';if(r.network)$('logonOffline').hidden=false;return;}
+ $('logonOffline').hidden=true;
+ const sel=$('logonName'),keep=sel.value||localStorage.getItem('dial-last-staff')||'';
+ sel.innerHTML='<option value="">名前を選んでください</option>'+r.staff.map(s=>`<option value="${esc(s.name)}"${s.hasPassword?'':' data-new="1"'}>${esc(s.name)}${s.hasPassword?'':'（初回）'}</option>`).join('');
+ if([...sel.options].some(o=>o.value===keep))sel.value=keep;
+ hintName();renderToday(r.today);
+ if(!quiet&&!$('logon').hidden&&!isTouch()&&document.activeElement?.id!=='logonPass')(sel.value?$('logonPass'):sel).focus();   // PCは続けて入力できるように
+}
+function renderToday(rows){
+ const n=k=>rows.filter(x=>x.result===k).length;
+ $('todaySum').textContent=`${rows.length}件（一致 ${n('一致')}／相違 ${n('相違')}／抗凝固剤未照合 ${n('抗凝固剤は未照合')}）`;
+ $('todayRows').innerHTML=rows.length?rows.map(x=>`<tr><td>${esc(x.time)}</td><td>${esc(x.staff)}</td><td class="${resultClass(x.result)}">${esc(x.result)}</td><td>${esc(x.name)}</td><td>${esc(x.product)}</td><td>${esc(x.drug)}</td></tr>`).join(''):'<tr><td colspan="6" class="muted">本日の照合はまだありません</td></tr>';
+ $('todayMsg').textContent='更新：'+new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+}
+function hintName(){const o=$('logonName').selectedOptions[0];$('logonHint').textContent=o&&o.dataset.new?'初めてのログオンです。入力したもの（4文字以上）があなたのパスワードになります。':'';}
+async function doLogon(){
+ const name=$('logonName').value,password=$('logonPass').value;
+ if(!name||!password){$('logonError').textContent='名前とパスワードを入力してください';return;}
+ $('logonBtn').disabled=true;$('logonError').textContent='確認しています…';
+ const r=await callApi('login',{name,password},'');$('logonBtn').disabled=false;$('logonPass').value='';
+ if(!r.ok){$('logonError').textContent=r.error;if(r.network)$('logonOffline').hidden=false;return;}
+ try{localStorage.setItem('dial-last-staff',name)}catch(e){}
+ me={name:r.name,token:r.token,isAdmin:r.isAdmin};offlineMode=false;$('offlineBar').hidden=true;
+ enterApp(r.firstTime?'パスワードを登録しました。次からはこのパスワードでログオンしてください。':'');
+}
+function enterApp(note){
+ $('logon').hidden=true;document.body.classList.remove('locked');clearInterval(todayTimer);lastAct=Date.now();
+ $('userBox').hidden=!me;if(me){$('userBtn').textContent='担当：'+me.name+' ▾';$('mStaff').hidden=!me.isAdmin;}
+ document.querySelector('[data-tab="checkTab"]').click();
+ if(note)$('status').textContent=note;
+ flushPending();
+}
+async function logoff(msg){
+ if(me){await flushPending();callApi('logout',{},me.token);}
+ state=null;render();showLogon(msg||'');
+}
+
+/* ---------- 照合結果を送る（送れなければ端末に溜め、あとで送る） ---------- */
+function pending(){try{return JSON.parse(localStorage.getItem(PENDING_KEY)||'[]')}catch(e){return []}}
+function setPending(a){try{localStorage.setItem(PENDING_KEY,JSON.stringify(a))}catch(e){}showPending();}
+function showPending(){const n=pending().length;$('pendingNote').textContent=n?`未送信の記録 ${n}件（つながったら自動で送ります）`:'';$('histPending').textContent=$('pendingNote').textContent;}
+function newId(){try{return crypto.randomUUID().replace(/-/g,'')}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2,12)}}
+function recordResult(s){
+ if(!DIAL_API||offlineMode||!me)return;
+ const raw=String(window.__lastRaw||''),m=/^(?:\][A-Za-z]\d)?01(\d{14})/.exec(raw.trim());
+ const rec={id:newId(),kind:s.kind,at:Date.now(),staff:me.name,name:s.label?.name||'',product:s.label?.product||'',gtin:s.label?.gtin||'',
+  bodyGtin:s.item?.gtin||(s.label&&m&&m[1]!==s.label.drugGtin?m[1]:''),lot:s.item?.lot||'',expiry:s.item?.expiryText||'',
+  drug:s.label?.drug||'',drugGtin:s.label?.drugGtin||'',message:s.message||'',device:deviceName(),issued:s.label?stamp(s.label.issued):''};
+ setPending(pending().concat([rec]));flushPending();
+}
+let flushing=false;
+async function flushPending(){
+ if(flushing||!me||!DIAL_API)return;flushing=true;
+ try{
+  let list=pending();
+  while(list.length){
+   const r=await callApi('record',{rec:list[0]});
+   if(!r.ok){if(r.relogin){flushing=false;logoff('ログオンの有効期限が切れました。もう一度ログオンしてください（未送信の記録は残っています）');return;}
+    $('pendingNote').textContent=`未送信の記録 ${list.length}件：${r.error}`;break;}
+   list=pending().filter(x=>x.id!==list[0].id);setPending(list);
+  }
+ }finally{flushing=false;}
+}
+setInterval(()=>{if(me&&pending().length)flushPending();},60000);
+
+/* ---------- 照合が終わったら1回だけ記録（自分で取り消したときは記録しない） ---------- */
+{const baseRender=render;render=function(){baseRender();const s=state;if(s&&s.phase==='done'&&!s.cancelled&&!s.__logged){s.__logged=true;recordResult(s);}showPending();};}
+
+/* ---------- 操作がなければ自動でログオフ ---------- */
+['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+setInterval(()=>{if(me&&Date.now()-lastAct>IDLE_MIN*60000)logoff(IDLE_MIN+'分操作がなかったため、ログオフしました');},20000);
+
+/* ---------- 右上の名前：パスワード変更・スタッフ管理・ログオフ ---------- */
+function openModal(title,html){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modal').hidden=false;}
+$('modalClose').onclick=()=>{$('modal').hidden=true;};
+$('userBtn').onclick=()=>{$('userMenu').hidden=!$('userMenu').hidden;};
+document.addEventListener('click',e=>{if(!e.target.closest('#userBox'))$('userMenu').hidden=true;});
+$('mLogoff').onclick=()=>{$('userMenu').hidden=true;logoff('ログオフしました');};
+$('mPass').onclick=()=>{$('userMenu').hidden=true;
+ openModal('パスワードを変更','<label class="field">今のパスワード</label><input id="pwCur" type="password" autocomplete="current-password"><label class="field">新しいパスワード（4文字以上）</label><input id="pwNew" type="password" autocomplete="new-password"><label class="field">新しいパスワード（確認）</label><input id="pwNew2" type="password" autocomplete="new-password"><div class="buttons"><button id="pwSave">変更する</button></div><p id="pwMsg" class="errorText"></p>');
+ $('pwSave').onclick=async()=>{const c=$('pwCur').value,n=$('pwNew').value,n2=$('pwNew2').value;
+  if(n.length<4){$('pwMsg').textContent='新しいパスワードは4文字以上にしてください';return;}
+  if(n!==n2){$('pwMsg').textContent='確認のパスワードが一致しません';return;}
+  const r=await callApi('changePassword',{current:c,next:n});$('pwMsg').textContent=r.ok?'変更しました。':r.error;if(r.relogin)logoff(r.error);};
+};
+function staffTable(list){return '<table><thead><tr><th>名前</th><th>状態</th><th>操作</th></tr></thead><tbody>'+list.map(s=>`<tr><td>${esc(s.name)}${s.isAdmin?'（管理者）':''}</td><td>${s.active?'有効':'無効'}・${s.hasPassword?'パスワード登録済み':'未登録'}</td><td><button class="secondary" data-act="reset" data-name="${esc(s.name)}">パスワード初期化</button> <button class="secondary" data-act="active" data-on="${s.active?'0':'1'}" data-name="${esc(s.name)}">${s.active?'無効にする':'有効にする'}</button> <button class="secondary" data-act="admin" data-on="${s.isAdmin?'0':'1'}" data-name="${esc(s.name)}">${s.isAdmin?'管理者を外す':'管理者にする'}</button></td></tr>`).join('')+'</tbody></table>';}
+$('mStaff').onclick=async()=>{$('userMenu').hidden=true;
+ openModal('スタッフ管理','<div class="buttons"><input id="newStaff" placeholder="追加する名前（例：山田太郎）" maxlength="30"><button id="addStaffBtn">追加</button></div><p id="staffMsg" class="errorText"></p><div id="staffList" class="tableWrap">読み込み中…</div><p class="muted">パスワード初期化：その人が次にログオンしたときに入力したものが新しいパスワードになります。</p>');
+ const show=r=>{if(!r.ok){$('staffMsg').textContent=r.error;return;}$('staffMsg').textContent='';$('staffList').innerHTML=staffTable(r.staff);};
+ show(await callApi('adminStaff'));
+ $('addStaffBtn').onclick=async()=>{const n=$('newStaff').value.trim();if(!n)return;show(await callApi('addStaff',{name:n}));$('newStaff').value='';};
+ $('staffList').onclick=async e=>{const b=e.target.closest('button[data-act]');if(!b)return;const name=b.dataset.name;
+  if(b.dataset.act==='reset')show(await callApi('resetPassword',{name}));
+  if(b.dataset.act==='active')show(await callApi('setStaffActive',{name,active:b.dataset.on==='1'}));
+  if(b.dataset.act==='admin')show(await callApi('setStaffAdmin',{name,isAdmin:b.dataset.on==='1'}));};
+};
+
+/* ---------- 照合履歴タブ（ログオン後。氏名を全部表示） ---------- */
+async function loadHistory(){
+ if(!me){$('histMsg').textContent=offlineMode?'記録なしで使用中のため、履歴は見られません。':'';return;}
+ $('histMsg').textContent='読み込み中…';
+ const r=await callApi('history',{date:$('histDate').value||jstDate()});
+ if(!r.ok){$('histMsg').textContent=r.error;if(r.relogin)logoff(r.error);return;}
+ $('histMsg').textContent=r.rows.length+'件';
+ $('histRows').innerHTML=r.rows.length?r.rows.map(x=>`<tr><td>${esc(x.seconds||x.time)}</td><td>${esc(x.staff)}</td><td class="${resultClass(x.result)}">${esc(x.result)}</td><td>${esc(x.name)}</td><td>${esc(x.product)}${x.lot?'<br><span class="muted">ロット '+esc(x.lot)+'</span>':''}</td><td>${esc(x.drug)}</td><td>${esc(x.message)}<br><span class="muted">${esc(x.device)}</span></td></tr>`).join(''):'<tr><td colspan="7" class="muted">この日の記録はありません</td></tr>';
+}
+$('histLoad').onclick=loadHistory;
+document.querySelector('[data-tab="historyTab"]').addEventListener('click',()=>{if(!$('histDate').value)$('histDate').value=jstDate();loadHistory();});
+
+/* ---------- 起動 ---------- */
+$('logonName').onchange=hintName;
+$('logonBtn').onclick=doLogon;
+$('logonPass').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doLogon();}});
+$('todayReload').onclick=()=>loadLoginInfo();
+$('logonOffline').onclick=()=>{offlineMode=true;me=null;$('offlineBar').hidden=false;enterApp('記録なしで使用中です（通信できないため、誰が照合したかは残りません）。');};
+if(DIAL_API){$('badge').textContent='読み取りは端末内・照合記録は共有シートへ';showLogon('');}
+else{$('logon').hidden=true;}
+showPending();
 </script></body></html>
 
 <!-- QR generator license
